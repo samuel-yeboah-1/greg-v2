@@ -14,11 +14,14 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useState } from "react"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [showPassword, setShowPassword] = useState(false)
   const form = useForm<LoginType>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
@@ -34,7 +37,7 @@ export function LoginForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
-        <CardContent className="grid p-0 md:grid-cols-2">
+        <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
               <div className="flex flex-col gap-6">
@@ -76,7 +79,22 @@ export function LoginForm({
                         </a>
                       </div>
                       <FormControl>
-                        <Input type="password" {...field} />
+                        <div className="space-y-2">
+                          <Input type={showPassword ? "text" : "password"} {...field} />
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="show-password"
+                              checked={showPassword}
+                              onCheckedChange={() => setShowPassword(!showPassword)}
+                            />
+                            <label
+                              htmlFor="show-password"
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              Show password
+                            </label>
+                          </div>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -121,26 +139,15 @@ export function LoginForm({
                 </div>
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}
-                  <a href="#" className="underline underline-offset-4">
+                  <a href="/auth/signup" className="underline underline-offset-4">
                     Sign up
                   </a>
                 </div>
               </div>
             </form>
           </Form>
-          <div className="bg-muted relative hidden md:block">
-            <img
-              src="/placeholder.svg"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-            />
-          </div>
         </CardContent>
       </Card>
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </div>
     </div>
   )
 }
