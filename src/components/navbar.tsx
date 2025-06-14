@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import ToggleButton from "./animated-hamburger";
 import { gsap } from "gsap";
+import { ModeToggle } from "./ui/mode-toggle";
 
 function Navbar() {
   const navLinks = [
@@ -56,18 +57,31 @@ function Navbar() {
     <nav className="p-6 relative">
       <div className="flex flex-row justify-between items-center">
         <div>
-          <p>Greg AI</p>
+          <p>
+            <a href="/">Greg AI</a>
+          </p>
         </div>
-        <ul className="hidden md:flex flex-row gap-2">
-          {navLinks.map((link) => (
-            <li key={link.name}>
-              <a href={link.link}>{link.name}</a>
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-row gap-6">
+          <div className="hidden md:block">
+            <ModeToggle />
+          </div>
+          <ul className="hidden md:flex flex-row gap-6 items-center">
+            {navLinks.map((link) => (
+              <li key={link.name}>
+                <a href={link.link}>{link.name}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         <div className="md:hidden z-[60] relative">
-          <ToggleButton isOpen={toggleMenu} onClick={handleToggleMenu} />
+          <div
+            className="flex flex-row gap-6
+          "
+          >
+            <ModeToggle />
+            <ToggleButton isOpen={toggleMenu} onClick={handleToggleMenu} />
+          </div>
         </div>
       </div>
 
@@ -84,7 +98,7 @@ function Navbar() {
             <li key={link.name} className="text-3xl">
               <a
                 href={link.link}
-                onClick={() => setToggleMenu(false)} // Close menu when link is clicked
+                onClick={() => setToggleMenu(false)}
                 className="hover:text-gray-600 transition-colors"
               >
                 {link.name}
