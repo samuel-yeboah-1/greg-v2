@@ -16,45 +16,50 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react"
+import { signupHandler } from "@/services/auth.service"
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const form = useForm<SignupType>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      firstname: "",
+      lastname: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  const onSubmit = (data: SignupType) => {
-    console.log("data", data);
+  const onSubmit = async (userCredentials: SignupType) => {
+    console.log(userCredentials)
+    try {
+        const response = await signupHandler(userCredentials);
+    } catch (error) {
+        console.error("error fetching user", error)
+    }
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0">
+    <div className={cn("flex min-h-full items-center justify-center w-full", className)} {...props}>
+      <Card className="w-full max-w-[450px] mx-auto overflow-hidden">
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
-              <div className="flex flex-col gap-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 sm:p-6 md:p-8">
+              <div className="flex flex-col gap-4 sm:gap-6">
                 <div className="flex flex-col items-center text-center">
                   <h1 className="text-2xl font-bold">Create an account</h1>
                   <p className="text-muted-foreground text-balance">
                     Sign up for a Greg Account
                   </p>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
-                    name="firstName"
+                    name="firstname"
                     render={({ field }) => (
                       <FormItem className="grid gap-3">
                         <FormLabel>First Name</FormLabel>
@@ -67,7 +72,7 @@ export function SignUpForm({
                   />
                   <FormField
                     control={form.control}
-                    name="lastName"
+                    name="lastname"
                     render={({ field }) => (
                       <FormItem className="grid gap-3">
                         <FormLabel>Last Name</FormLabel>
@@ -79,66 +84,66 @@ export function SignUpForm({
                     )}
                   />
                 </div>
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem className="grid gap-3">
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="m@example.com"
-                          type="email"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem className="grid gap-3">
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <div className="space-y-2">
+                <div className="flex flex-col gap-4">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="m@example.com"
+                            type="email"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
                           <Input type={showPassword ? "text" : "password"} {...field} />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem className="grid gap-3">
-                      <FormLabel>Confirm Password</FormLabel>
-                      <FormControl>
-                        <div className="space-y-2">
-                          <Input type={showPassword ? "text" : "password"} {...field} />
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="show-confirm-password"
-                              checked={showPassword}
-                              onCheckedChange={() => setShowPassword(!showPassword)}
-                            />
-                            <label
-                              htmlFor="show-confirm-password"
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            >
-                              Show password
-                            </label>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <FormControl>
+                          <div className="space-y-2">
+                            <Input type={showPassword ? "text" : "password"} {...field} />
+                            <div className="flex items-center space-x-2">
+                              <Checkbox
+                                id="show-password"
+                                checked={showPassword}
+                                onCheckedChange={() => setShowPassword(!showPassword)}
+                              />
+                              <label
+                                htmlFor="show-password"
+                                className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                Show password
+                              </label>
+                            </div>
                           </div>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <Button type="submit" className="w-full">
                   Sign Up
                 </Button>
@@ -185,7 +190,6 @@ export function SignUpForm({
               </div>
             </form>
           </Form>
-       
         </CardContent>
       </Card>
     </div>

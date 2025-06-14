@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { signinSchema } from "../schemas"
-import { LoginType } from "@/types"
+import { SigninType } from "@/types"
 import {
   Form,
   FormControl,
@@ -16,13 +16,14 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react"
+import { signinHandler } from "@/services/auth.service"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false)
-  const form = useForm<LoginType>({
+  const form = useForm<SigninType>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
       email: "",
@@ -30,8 +31,13 @@ export function LoginForm({
     },
   })
 
-  const onSubmit = (data: LoginType) => {
-    console.log("data", data)
+    const onSubmit = async (userCredentials: SigninType) => {
+        try {
+            const response = await signinHandler(userCredentials);
+        } catch (error) {
+            console.error("error fetching user", error)
+        }
+        
   }
 
   return (
@@ -71,16 +77,10 @@ export function LoginForm({
                     <FormItem className="grid gap-3">
                       <div className="flex items-center">
                         <FormLabel>Password</FormLabel>
-                        <a
-                          href="#"
-                          className="ml-auto text-sm underline-offset-2 hover:underline"
-                        >
-                          Forgot your password?
-                        </a>
                       </div>
                       <FormControl>
                         <div className="space-y-2">
-                          <Input type={showPassword ? "text" : "password"} {...field} />
+                          <Input type={showPassword ? "text" : "password"} {...field} placeholder="Password"/>
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="show-password"

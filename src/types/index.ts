@@ -1,13 +1,13 @@
-type LoginType = {
+type SigninType = {
     email: string;
     password: string;
 }
 type SignupType = {
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     email: string;
     password: string;
     confirmPassword: string;
 }
 
-export type { LoginType, SignupType };
+export type { SigninType, SignupType };
