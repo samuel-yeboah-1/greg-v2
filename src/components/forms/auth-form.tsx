@@ -11,7 +11,7 @@ export function AuthForm() {
   const isSignUp = currentPath === "signup";
 
   return (
-    <div className="overflow-hidden p-0 h-dvh flex items-center justify-center">
+    <div className="overflow-hidden p-0 flex items-center justify-center">
       <div className="grid p-0 md:grid-cols-2 md:px-20">
         {isSignUp ? <SignUpForm /> : <LoginForm />}
         <div className="bg-muted relative hidden md:block">
