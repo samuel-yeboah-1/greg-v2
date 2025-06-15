@@ -28,16 +28,18 @@ const formatDate = (date: Date) => {
 function Chatbox() {
   const date = new Date();
   return (
-    <div className="flex flex-col bg-[#F9FAFB] h-[85dvh] w-[500px] rounded-lg shadow-lg">
-      <header className="bg-white flex-shrink-0 rounded-t-lg">
+    <div className="flex flex-col bg-white dark:bg-gray-900 h-[85dvh] w-[500px] rounded-lg shadow-lg border border-gray-200 dark:border-gray-800">
+      <header className="bg-gray-50 dark:bg-gray-800 flex-shrink-0 rounded-t-lg border-b border-gray-200 dark:border-gray-700">
         <div className="py-4 px-6">
-          <p>Chatbot playground</p>
+          <p className="font-medium text-gray-900 dark:text-gray-100">
+            Chatbot playground
+          </p>
         </div>
       </header>
       <main className="flex flex-col flex-1 overflow-hidden">
-        <section className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-gray-400">
+        <section className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-gray-400 dark:hover:[&::-webkit-scrollbar-thumb]:bg-gray-500">
           <div className="p-4">
-            <div className="text-sm text-gray-500 mb-6 flex items-center justify-center">
+            <div className="text-sm text-gray-500 dark:text-gray-400 mb-6 flex items-center justify-center">
               {formatDate(date)}
             </div>
             <div className="flex flex-col gap-6">

@@ -13,7 +13,7 @@ function BubbleContainer({ children, className, type }: QueryContainerProps) {
         `${
           type === "user"
             ? "bg-blue-600 text-base text-gray-50 rounded-tl-4xl rounded-tr-2xl rounded-br-sm rounded-bl-4xl self-end"
-            : "bg-white  text-black  rounded-tl-2xl rounded-tr-2xl rounded-bl rounded-br-2xl"
+            : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-tl-2xl rounded-tr-2xl rounded-bl rounded-br-2xl"
         } p-4 shadow-lightFallback w-max max-w-[400px] break-words`,
         className
       )}

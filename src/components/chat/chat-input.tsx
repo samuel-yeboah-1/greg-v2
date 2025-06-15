@@ -85,7 +85,7 @@ function ChatInput() {
       <div className="flex-1 h-full">
         <Textarea
           placeholder="Type your message here..."
-          className="h-full w-full resize-none border-0 focus:ring-0 focus-visible:ring-0 focus:border-0 text-gray-900 focus-visible:border-0 focus:outline-none bg-transparent shadow-none"
+          className="h-full w-full resize-none border-0 focus:ring-0 focus-visible:ring-0 focus:border-0 text-gray-900 dark:text-white focus-visible:border-0 focus:outline-none bg-transparent shadow-none"
         />
       </div>
       <div className="flex flex-row items-center gap-6 flex-shrink-0 p-4">
