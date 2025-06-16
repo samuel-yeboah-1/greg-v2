@@ -1,5 +1,4 @@
 import Chatbox from "@/components/Chatbox";
-import { LogoutButton } from "@/components/LogoutButton";
 
 function Page() {
   return (

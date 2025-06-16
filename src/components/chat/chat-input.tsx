@@ -6,13 +6,13 @@ import SendIcon from "../../../public/assets/icons/SendIcon";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Laptop, Cable, ChevronRight, X } from "lucide-react";
 import { ChatInputProps } from "@/types/chat";
-import { ACCEPTED_FILE_TYPES } from "@/constants/chat";
+// import { ACCEPTED_FILE_TYPES } from "@/constants/chat";
 import { getFileTypeLabel } from "@/utils/chat";
 
 function ChatInput({ onSendMessage, isLoading = false }: ChatInputProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [closePopOver, setClosePopOver] = useState<Boolean>(false);
-  const [message, setMessage] = useState("");
+  // const [closePopOver, setClosePopOver] = useState<Boolean>(false);
+  // const [message, setMessage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = useCallback((files: FileList | null) => {
@@ -45,29 +45,29 @@ function ChatInput({ onSendMessage, isLoading = false }: ChatInputProps) {
     [selectedFiles.length]
   );
 
-  const handleSend = useCallback(() => {
-    if (message.trim() || selectedFiles.length > 0) {
-      onSendMessage({
-        text: message.trim(),
-        files: selectedFiles.length > 0 ? selectedFiles : undefined,
-      });
-      setMessage("");
-      setSelectedFiles([]);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
-    }
-  }, [message, selectedFiles, onSendMessage]);
+  // const handleSend = useCallback(() => {
+  //   if (message.trim() || selectedFiles.length > 0) {
+  //     onSendMessage({
+  //       text: message.trim(),
+  //       files: selectedFiles.length > 0 ? selectedFiles : undefined,
+  //     });
+  //     setMessage("");
+  //     setSelectedFiles([]);
+  //     if (fileInputRef.current) {
+  //       fileInputRef.current.value = "";
+  //     }
+  //   }
+  // }, [message, selectedFiles, onSendMessage]);
 
-  const handleKeyPress = useCallback(
-    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        handleSend();
-      }
-    },
-    [handleSend]
-  );
+  // const handleKeyPress = useCallback(
+  //   (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  //     if (e.key === "Enter" && !e.shiftKey) {
+  //       e.preventDefault();
+  //       handleSend();
+  //     }
+  //   },
+  //   [handleSend]
+  // );
 
   return (
     <div className="rounded-2xl border border-[#CBD5E0] flex flex-col">

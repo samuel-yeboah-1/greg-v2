@@ -1,6 +1,5 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { Card, CardContent } from "@/components/ui/card";
 import { SignInForm } from "@/components/SignIn";
 import { SignUpForm } from "@/components/SignUp";
 import Image from "next/image";

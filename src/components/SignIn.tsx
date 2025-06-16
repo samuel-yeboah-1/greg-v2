@@ -25,7 +25,7 @@ export function SignInForm({
   ...props
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState<String>("");
+  const [loginError, setLoginError] = useState<string>("");
   const form = useForm<SigninType>({
     resolver: zodResolver(signinSchema),
     defaultValues: {

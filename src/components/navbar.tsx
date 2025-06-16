@@ -6,6 +6,7 @@ import { ModeToggle } from "./ui/mode-toggle";
 import { useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import { LogoutButton } from "./LogoutButton";
+import Link from "next/link";
 
 function Navbar() {
   const { data: session, status } = useSession();
@@ -62,7 +63,7 @@ function Navbar() {
       <div className="flex flex-row justify-between items-center border rounded-2xl dark:shadow-cyan-900 shadow-gray-300 shadow-xl p-6">
         <div>
           <p>
-            <a href="/">Greg AI</a>
+            <Link href="/">Greg AI</Link>
           </p>
         </div>
         <div className="flex flex-row gap-6">

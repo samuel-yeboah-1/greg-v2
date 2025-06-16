@@ -4,7 +4,6 @@ import { SplineScene } from "@/components/ui/splite";
 import { Card } from "@/components/ui/card";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SplittingText } from "./animate-ui/text/splitting";
-import { AnimatedBeam } from "./magicui/animated-beam";
 
 export function SplineSceneBasic() {
   return (
