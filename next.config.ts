@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    serverComponentsExternalPackages: ['axios', 'oidc-token-hash', '@auth/core']
+  }
 };
 
 export default nextConfig;

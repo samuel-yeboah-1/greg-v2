@@ -1,12 +1,8 @@
 import React from "react";
 import { cn } from "@/lib/utils";
+import { BubbleProps } from "@/types/chat";
 
-interface QueryContainerProps {
-  children: React.ReactNode | string;
-  className?: string;
-  type?: "user" | "bot" | string;
-}
-function BubbleContainer({ children, className, type }: QueryContainerProps) {
+function BubbleContainer({ children, className, type }: BubbleProps) {
   return (
     <div
       className={cn(

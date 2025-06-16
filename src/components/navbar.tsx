@@ -3,11 +3,15 @@ import React, { useState, useEffect, useRef } from "react";
 import ToggleButton from "./animated-hamburger";
 import { gsap } from "gsap";
 import { ModeToggle } from "./ui/mode-toggle";
+import { useSession } from "next-auth/react";
+import { Button } from "./ui/button";
+import { LogoutButton } from "./LogoutButton";
 
 function Navbar() {
+  const { data: session, status } = useSession();
+
   const navLinks = [
     { name: "About", link: "/about" },
-    { name: "Signin", link: "/auth/signin" },
     { name: "Contact", link: "/contact" },
     { name: "Blog", link: "/blog" },
   ];
@@ -55,7 +59,7 @@ function Navbar() {
 
   return (
     <nav className="p-6 relative">
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row justify-between items-center border rounded-2xl dark:shadow-cyan-900 shadow-gray-300 shadow-xl p-6">
         <div>
           <p>
             <a href="/">Greg AI</a>
@@ -71,14 +75,21 @@ function Navbar() {
                 <a href={link.link}>{link.name}</a>
               </li>
             ))}
+            <li>
+              {status === "authenticated" ? (
+                <LogoutButton />
+              ) : (
+                <Button variant="outline" asChild>
+                  <a href="/auth/signin">Sign In</a>
+                </Button>
+              )}
+            </li>
           </ul>
         </div>
 
+        {/* Mobile menu trigger */}
         <div className="md:hidden z-[60] relative">
-          <div
-            className="flex flex-row gap-6
-          "
-          >
+          <div className="flex flex-row gap-6">
             <ModeToggle />
             <ToggleButton isOpen={toggleMenu} onClick={handleToggleMenu} />
           </div>
@@ -105,6 +116,17 @@ function Navbar() {
               </a>
             </li>
           ))}
+          <li className="text-3xl">
+            {status === "authenticated" ? (
+              <LogoutButton />
+            ) : (
+              <Button variant="outline" asChild>
+                <a href="/auth/signin" onClick={() => setToggleMenu(false)}>
+                  Sign In
+                </a>
+              </Button>
+            )}
+          </li>
         </ul>
       </div>
     </nav>

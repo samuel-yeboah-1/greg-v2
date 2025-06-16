@@ -1,6 +1,7 @@
 import { axiosInstance } from "@/lib/axios"
+
 import { SigninType, SignupType } from "@/types"
-const signinHandler = async (userCredentials:SigninType) => {
+export const signinHandler = async (userCredentials:SigninType) => {
     try {
         const response = await axiosInstance.post('/auth/signin', userCredentials)
         if(response.status != 200) return
@@ -11,7 +12,7 @@ const signinHandler = async (userCredentials:SigninType) => {
     }
 }
 
-const signupHandler = async (userCredentials:SignupType) => {
+export const signupHandler = async (userCredentials:SignupType) => {
     try {
         const response = await axiosInstance.post('/auth/signup', userCredentials)
         if(response.status != 200) return
@@ -21,4 +22,19 @@ const signupHandler = async (userCredentials:SignupType) => {
         console.error("Error fetching users", error);
     }
 }
-export {signinHandler,signupHandler}
+export const verifyToken = async (token: string) => {
+    if(!token) return null
+    try {
+        const response = await axiosInstance.post('/auth/verifyToken', {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.status === 200;
+    } catch (error) {
+        console.error("Token verification failed:", error);
+        return false;
+    }
+};
+
+

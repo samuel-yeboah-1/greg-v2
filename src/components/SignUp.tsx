@@ -1,8 +1,9 @@
-import { cn } from "@/lib/utils"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { signupSchema } from "../schemas"
-import { SignupType } from "@/types"
+"use client";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { signupSchema } from "../schemas";
+import { SignupType } from "@/types";
 import {
   Form,
   FormControl,
@@ -10,19 +11,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
-import { useState } from "react"
-import { signupHandler } from "@/services/auth.service"
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
+import { signupHandler } from "@/services/auth.service";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const form = useForm<SignupType>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -34,21 +37,51 @@ export function SignUpForm({
     },
   });
 
+  const router = useRouter();
+  const [signUpError, setSignUpError] = useState<String>("");
+
   const onSubmit = async (userCredentials: SignupType) => {
-    console.log(userCredentials)
     try {
-        const response = await signupHandler(userCredentials);
-    } catch (error) {
-        console.error("error fetching user", error)
+      const response = await signupHandler(userCredentials);
+
+      if (response.error) {
+        setSignUpError(response.message);
+        return;
+      }
+
+      const result = await signIn("credentials", {
+        email: userCredentials.email,
+        password: userCredentials.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setSignUpError(result.error);
+      } else {
+        router.push("/actions");
+        router.refresh();
+      }
+    } catch (error: any) {
+      setSignUpError(error?.message || "An error occurred during sign up");
+      console.error("error during sign up:", error);
     }
   };
 
   return (
-    <div className={cn("flex min-h-full items-center justify-center w-full", className)} {...props}>
+    <div
+      className={cn(
+        "flex min-h-full items-center justify-center w-full",
+        className
+      )}
+      {...props}
+    >
       <Card className="w-full max-w-[450px] mx-auto overflow-hidden">
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 sm:p-6 md:p-8">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="p-4 sm:p-6 md:p-8"
+            >
               <div className="flex flex-col gap-4 sm:gap-6">
                 <div className="flex flex-col items-center text-center">
                   <h1 className="text-2xl font-bold">Create an account</h1>
@@ -109,7 +142,10 @@ export function SignUpForm({
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input type={showPassword ? "text" : "password"} {...field} />
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -123,12 +159,17 @@ export function SignUpForm({
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
                           <div className="space-y-2">
-                            <Input type={showPassword ? "text" : "password"} {...field} />
+                            <Input
+                              type={showPassword ? "text" : "password"}
+                              {...field}
+                            />
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="show-password"
                                 checked={showPassword}
-                                onCheckedChange={() => setShowPassword(!showPassword)}
+                                onCheckedChange={() =>
+                                  setShowPassword(!showPassword)
+                                }
                               />
                               <label
                                 htmlFor="show-password"
@@ -144,6 +185,7 @@ export function SignUpForm({
                     )}
                   />
                 </div>
+                <FormMessage>{signUpError}</FormMessage>
                 <Button type="submit" className="w-full">
                   Sign Up
                 </Button>
@@ -183,7 +225,10 @@ export function SignUpForm({
                 </div>
                 <div className="text-center text-sm">
                   Already have an account?{" "}
-                  <a href="/auth/signin" className="underline underline-offset-4">
+                  <a
+                    href="/auth/signin"
+                    className="underline underline-offset-4"
+                  >
                     Sign in
                   </a>
                 </div>

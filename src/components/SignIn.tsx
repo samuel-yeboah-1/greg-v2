@@ -1,8 +1,9 @@
-import { cn } from "@/lib/utils"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { signinSchema } from "../schemas"
-import { SigninType } from "@/types"
+"use client";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { signinSchema } from "../schemas";
+import { SigninType } from "@/types";
 import {
   Form,
   FormControl,
@@ -10,42 +11,57 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
-import { useState } from "react"
-import { signinHandler } from "@/services/auth.service"
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-export function LoginForm({
+export function SignInForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState<String>("");
   const form = useForm<SigninType>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
       email: "",
       password: "",
     },
-  })
+  });
 
-    const onSubmit = async (userCredentials: SigninType) => {
-        try {
-            const response = await signinHandler(userCredentials);
-        } catch (error) {
-            console.error("error fetching user", error)
-        }
-        
-  }
+  const router = useRouter();
+
+  const onSubmit = async (userCredentials: SigninType) => {
+    try {
+      const result = await signIn("credentials", {
+        email: userCredentials.email,
+        password: userCredentials.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setLoginError(result.error);
+      } else {
+        router.push("/actions");
+        router.refresh();
+      }
+    } catch (error: any) {
+      setLoginError(error?.message || "An error occurred during sign in");
+      console.error("error during sign in:", error);
+    }
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
+            <form className="p-6 md:p-8" onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
                   <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -80,12 +96,18 @@ export function LoginForm({
                       </div>
                       <FormControl>
                         <div className="space-y-2">
-                          <Input type={showPassword ? "text" : "password"} {...field} placeholder="Password"/>
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            {...field}
+                            placeholder="Password"
+                          />
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="show-password"
                               checked={showPassword}
-                              onCheckedChange={() => setShowPassword(!showPassword)}
+                              onCheckedChange={() =>
+                                setShowPassword(!showPassword)
+                              }
                             />
                             <label
                               htmlFor="show-password"
@@ -100,6 +122,9 @@ export function LoginForm({
                     </FormItem>
                   )}
                 />
+
+                <FormMessage>{loginError}</FormMessage>
+
                 <Button type="submit" className="w-full">
                   Login
                 </Button>
@@ -139,7 +164,10 @@ export function LoginForm({
                 </div>
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}
-                  <a href="/auth/signup" className="underline underline-offset-4">
+                  <a
+                    href="/auth/signup"
+                    className="underline underline-offset-4"
+                  >
                     Sign up
                   </a>
                 </div>
@@ -149,5 +177,5 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

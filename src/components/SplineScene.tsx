@@ -27,7 +27,7 @@ export function SplineSceneBasic() {
             </div>
 
             <p className="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 dark:text-neutral-300 transition-colors duration-500 leading-relaxed break-words max-w-full lg:max-w-md xl:max-w-lg">
-              Make insights and make data-driven decisions today to take your
+              Get insights and make data-driven decisions today to take your
               business to the next level
             </p>
           </div>

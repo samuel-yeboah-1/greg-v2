@@ -1,11 +1,11 @@
-import React from "react";
 import Chatbox from "@/components/Chatbox";
-function page() {
+import { LogoutButton } from "@/components/LogoutButton";
+
+function Page() {
   return (
-    <div className="flex justify-end p-2 items-end">
+    <div className="flex justify-end p-2 items-end min-h-[90dvh] bg-gray-50 dark:bg-gray-900">
       <Chatbox />
     </div>
   );
 }
-
-export default page;
+export default Page;

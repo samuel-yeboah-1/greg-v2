@@ -1,57 +1,73 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { Textarea } from "../ui/textarea";
 import AttachementIcon from "../../../public/assets/icons/AttachementIcon";
 import SendIcon from "../../../public/assets/icons/SendIcon";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Laptop, Cable, ChevronRight, X, FileIcon } from "lucide-react";
+import { Laptop, Cable, ChevronRight, X } from "lucide-react";
+import { ChatInputProps } from "@/types/chat";
+import { ACCEPTED_FILE_TYPES } from "@/constants/chat";
+import { getFileTypeLabel } from "@/utils/chat";
 
-function ChatInput() {
+function ChatInput({ onSendMessage, isLoading = false }: ChatInputProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [closePopOver, setClosePopOver] = useState<Boolean>(false);
+  const [message, setMessage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = (files: FileList | null) => {
+  const handleFileSelect = useCallback((files: FileList | null) => {
     if (files) {
       setSelectedFiles((prev) => [...prev, ...Array.from(files)]);
     }
-  };
+  }, []);
 
-  const handleFileClick = () => {
+  const handleFileClick = useCallback(() => {
     fileInputRef.current?.click();
-  };
+  }, []);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      setSelectedFiles((prev) => [...prev, ...Array.from(files)]);
-    }
-  };
+  const handleFileChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const files = event.target.files;
+      if (files) {
+        setSelectedFiles((prev) => [...prev, ...Array.from(files)]);
+      }
+    },
+    []
+  );
 
-  const removeFile = (index: number) => {
-    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
-    if (fileInputRef.current && selectedFiles.length === 1) {
-      fileInputRef.current.value = "";
-    }
-  };
+  const removeFile = useCallback(
+    (index: number) => {
+      setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+      if (fileInputRef.current && selectedFiles.length === 1) {
+        fileInputRef.current.value = "";
+      }
+    },
+    [selectedFiles.length]
+  );
 
-  const getFileTypeIcon = (fileName: string) => {
-    const extension = fileName.split(".").pop()?.toLowerCase();
-    switch (extension) {
-      case "pdf":
-        return "PDF";
-      case "doc":
-      case "docx":
-        return "DOC";
-      case "txt":
-        return "TXT";
-      case "json":
-        return "JSON";
-      case "xml":
-        return "XML";
-      default:
-        return "FILE";
+  const handleSend = useCallback(() => {
+    if (message.trim() || selectedFiles.length > 0) {
+      onSendMessage({
+        text: message.trim(),
+        files: selectedFiles.length > 0 ? selectedFiles : undefined,
+      });
+      setMessage("");
+      setSelectedFiles([]);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
-  };
+  }, [message, selectedFiles, onSendMessage]);
+
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    },
+    [handleSend]
+  );
 
   return (
     <div className="rounded-2xl border border-[#CBD5E0] flex flex-col">
@@ -65,7 +81,7 @@ function ChatInput() {
               >
                 <div className="flex items-center gap-2">
                   <div className="text-xs font-medium bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
-                    {getFileTypeIcon(file.name)}
+                    {getFileTypeLabel(file.name)}
                   </div>
                   <span className="text-sm truncate max-w-[200px]">
                     {file.name}
@@ -110,8 +126,8 @@ function ChatInput() {
                 <Laptop size={20} />
                 <p className="text-xs">Add from computer</p>
               </div>
-              <div className="flex flex-row justify-between items-center">
-                <div className="flex flex-row gap-2 hover:cursor-pointer hover:bg-gray-100 hover:rounded-md items-center p-2">
+              <div className="flex flex-row justify-between items-center p-2 hover:cursor-pointer hover:bg-gray-100 hover:rounded-md">
+                <div className="flex flex-row gap-2  items-center ">
                   <Cable size={20} />
                   <p className="text-xs">Connect your apps</p>
                 </div>
