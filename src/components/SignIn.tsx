@@ -18,13 +18,16 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
+import { oauthHandler, signinHandler } from "@/services/auth.service";
 export function SignInForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
   const form = useForm<SigninType>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
@@ -37,14 +40,15 @@ export function SignInForm({
 
   const onSubmit = async (userCredentials: SigninType) => {
     try {
+      setIsLoading(true);
+      const response = await signinHandler(userCredentials);
+      console.log(response);
+      setIsLoading(false);
     } catch (error: any) {
+      setIsLoading(false);
       setLoginError(error?.message || "An error occurred during sign in");
       console.error("error during sign in:", error);
     }
-  };
-
-  const googleOAuthHandler = () => {
-    window.location.href = "http://localhost:5000/auth/google";
   };
 
   return (
@@ -116,8 +120,8 @@ export function SignInForm({
 
                 <FormMessage>{loginError}</FormMessage>
 
-                <Button type="submit" className="w-full">
-                  Login
+                <Button type="submit" className={`w-full`} disabled={isLoading}>
+                  {`${isLoading ? "loading..." : "Login"}`}
                 </Button>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                   <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -138,7 +142,7 @@ export function SignInForm({
                     variant="outline"
                     type="button"
                     className="w-full"
-                    onClick={googleOAuthHandler}
+                    onClick={() => oauthHandler("google")}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                       <path

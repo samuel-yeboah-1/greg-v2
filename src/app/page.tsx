@@ -16,6 +16,7 @@ import { CoolMode } from "@/components/magicui/cool-mode";
 import { Button } from "@/components/ui/button";
 import { RegisterYourInterest } from "@/components/forms/register-your-interest";
 import { RegisterInterestReveal } from "@/components/magicui/register";
+import Magnet from "@/components/magicui/magnet";
 
 export default function Home() {
   const [showLoader, setShowLoader] = useState(false);
@@ -51,17 +52,18 @@ export default function Home() {
           {/* Main content - above background but below navbar */}
           <div className="relative z-10 pt-24 px-6">
             <main className="flex flex-col gap-40">
-              <div className="flex flex-col gap-10 items-center justify-center w-[90vw] h-[90dvh]">
-                <p className=" tracking-wider font-extrabold text-5xl md:text-8xl text-blue-500 text-center">
+              <div className="flex flex-col gap-20 items-center justify-center w-[90vw] h-[90dvh]">
+                <Magnet className="tracking-wider font-extrabold text-5xl md:text-8xl text-blue-500 text-center">
                   IntEaCt WiTh YOuR dATa
-                </p>
-                <CoolMode>
-                  <Link spy={true} smooth={true} to="register-your-interest">
+                </Magnet>
+
+                <Link spy={true} smooth={true} to="register-your-interest">
+                  <CoolMode>
                     <Button className="bg-black text-white dark:bg-blue-200 dark:text-dark">
                       Register your interest
                     </Button>
-                  </Link>
-                </CoolMode>
+                  </CoolMode>
+                </Link>
               </div>
 
               <div>
@@ -72,7 +74,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-                <div className="flex-1">
+                <div className="flex-1 w-full">
                   <FileTreeDemo />
                 </div>
                 <div className="flex-1 w-full">
@@ -80,7 +82,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex flex-col justify-center items-center gap-2">
-                <TextReveal className="tracking-wider font-extrabold text-5xl lg:text-8xl align-middle text-center">
+                <TextReveal className="tracking-wider font-extrabold text-5xl md:text-9xl align-middle text-center">
                   Hear What People Have To Say
                 </TextReveal>
                 <MarqueeDemo />

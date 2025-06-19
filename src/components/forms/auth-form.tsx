@@ -10,7 +10,7 @@ export function AuthForm() {
   const isSignUp = currentPath === "signup";
 
   return (
-    <div className="overflow-hidden p-0 flex items-center justify-center">
+    <div className="overflow-hidden p-0 flex items-center justify-center mt-32">
       <div className="grid p-0 md:grid-cols-2 md:px-6">
         {isSignUp ? <SignUpForm /> : <SignInForm />}
         <div className="bg-muted relative hidden md:block">

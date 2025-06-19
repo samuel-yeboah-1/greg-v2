@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { SmoothCursor } from "@/components/ui/smooth-cursor";
+import TanstackQueryProvider from "@/providers/TanstackQueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,9 +37,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SmoothCursor />
+          <div className="hidden md:block">
+            <SmoothCursor />
+          </div>
           <Navbar />
-          {children}
+          <TanstackQueryProvider>{children}</TanstackQueryProvider>
         </ThemeProvider>
       </body>
     </html>

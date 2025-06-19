@@ -1,6 +1,6 @@
 import axios from "axios";
 const instance = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://gregmvp-backend.onrender.com/api/v1",
     timeout: 5000,
     headers: {
         'Content-Type': 'application/json',

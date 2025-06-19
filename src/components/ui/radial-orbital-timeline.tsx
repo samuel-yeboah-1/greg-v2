@@ -11,7 +11,7 @@ interface TimelineItem {
   date: string;
   content: string;
   category: string;
-  icon: React.ElementType;
+  icon: React.ComponentType<{ size?: number }>;
   relatedIds: number[];
   status: "completed" | "in-progress" | "pending";
   energy: number;
@@ -194,7 +194,9 @@ export default function RadialOrbitalTimeline({
             return (
               <div
                 key={item.id}
-                ref={(el) => (nodeRefs.current[item.id] = el)}
+                ref={(el) => {
+                  nodeRefs.current[item.id] = el;
+                }}
                 className="absolute transition-all duration-700 cursor-pointer"
                 style={nodeStyle}
                 onClick={(e) => {
@@ -222,16 +224,16 @@ export default function RadialOrbitalTimeline({
                     isExpanded
                       ? "bg-white text-black"
                       : isRelated
-                      ? "bg-white/50 text-black"
-                      : "bg-black text-white"
+                        ? "bg-white/50 text-black"
+                        : "bg-black text-white"
                   }
                   border-2 
                   ${
                     isExpanded
                       ? "border-white shadow-lg shadow-white/30"
                       : isRelated
-                      ? "border-white animate-pulse"
-                      : "border-white/40"
+                        ? "border-white animate-pulse"
+                        : "border-white/40"
                   }
                   transition-all duration-300 transform
                   ${isExpanded ? "scale-150" : ""}
@@ -264,8 +266,8 @@ export default function RadialOrbitalTimeline({
                           {item.status === "completed"
                             ? "COMPLETE"
                             : item.status === "in-progress"
-                            ? "IN PROGRESS"
-                            : "PENDING"}
+                              ? "IN PROGRESS"
+                              : "PENDING"}
                         </Badge>
                         <span className="text-xs font-mono text-white/50">
                           {item.date}

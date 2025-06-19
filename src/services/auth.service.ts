@@ -3,7 +3,7 @@ import { axiosInstance } from "@/lib/axios"
 import { SigninType, SignupType } from "@/types"
 export const signinHandler = async (userCredentials:SigninType) => {
     try {
-        const response = await axiosInstance.post('/auth/signin', userCredentials)
+        const response = await axiosInstance.post('/auth/login', userCredentials)
         if(response.status != 200) return
         const data = await response.data
         return data;
@@ -14,7 +14,7 @@ export const signinHandler = async (userCredentials:SigninType) => {
 
 export const signupHandler = async (userCredentials:SignupType) => {
     try {
-        const response = await axiosInstance.post('/auth/signup', userCredentials)
+        const response = await axiosInstance.post('/auth/register', userCredentials)
         if(response.status != 200) return
         const data = await response.data
         return data;
@@ -38,3 +38,14 @@ export const verifyToken = async (token: string) => {
 };
 
 
+/**
+ * Initiates Google OAuth login flow by redirecting the browser
+ * to the backend login endpoint, which will handle redirection to Google.
+ * 
+ * @param provider The OAuth provider to use (e.g., 'google')
+ */
+export const oauthHandler = (provider: string) => {
+    const loginUrl = `https://gregmvp-backend.onrender.com/api/v1/auth/login/${provider}`;
+    window.location.href = loginUrl;
+  };
+  

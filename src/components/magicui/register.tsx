@@ -20,7 +20,7 @@ export function RegisterInterestReveal() {
 
       <BoxReveal boxColor={"#5046e6"} duration={0.5}>
         <div className="mt-6">
-          <p>
+          <span>
             -&gt; 20+ free uploads and 1000 queries for free.
             <br />
             Support data types include ----
@@ -30,7 +30,7 @@ export function RegisterInterestReveal() {
             <p className="font-semibold text-[#5046e6]">Motion</p>
             . <br />
             -&gt; Over 99% <br />
-          </p>
+          </span>
         </div>
       </BoxReveal>
       <BoxReveal>

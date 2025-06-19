@@ -42,7 +42,6 @@ export function SignUpForm({
   const onSubmit = async (userCredentials: SignupType) => {
     try {
       const response = await signupHandler(userCredentials);
-
       if (response.error) {
         setSignUpError(response.message);
         return;
