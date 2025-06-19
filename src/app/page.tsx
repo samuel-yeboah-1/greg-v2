@@ -1,9 +1,21 @@
 "use client";
+
 import LoadingScreen from "@/components/LoadingScreen";
 import { AnimatedBeamDemo } from "@/components/AnimatedBeam";
 import { PricingBasic } from "@/components/Pricing";
 import { SplineSceneBasic } from "@/components/SplineScene";
 import { useState, useEffect } from "react";
+import Spline from "@splinetool/react-spline";
+import { FloatingPathsBackground } from "@/components/ui/floating-paths";
+import { Link } from "react-scroll";
+import { FileTreeDemo } from "@/components/magicui/FileTree";
+import { MarqueeDemo } from "@/components/magicui/marque";
+import { HighlightText } from "@/components/animate-ui/text/highlight";
+import { TextReveal } from "@/components/magicui/text-reveal";
+import { CoolMode } from "@/components/magicui/cool-mode";
+import { Button } from "@/components/ui/button";
+import { RegisterYourInterest } from "@/components/forms/register-your-interest";
+import { RegisterInterestReveal } from "@/components/magicui/register";
 
 export default function Home() {
   const [showLoader, setShowLoader] = useState(false);
@@ -23,27 +35,66 @@ export default function Home() {
     setShowLoader(false);
     setLoadingComplete(true);
   };
+
   return (
     <>
       {showLoader && <LoadingScreen onComplete={handleLoaderComplete} />}
       {loadingComplete && (
-        <div className="px-6">
-          <main className="flex flex-col gap-24">
-            <SplineSceneBasic />
-            <div className="flex flex-col md:flex-row gap-10">
-              <div className="flex-1">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-gray-800 to-gray-600 dark:from-neutral-50 dark:to-neutral-400 leading-tight transition-colors duration-500 break-words hyphens-auto">
-                  Automated scraping of document sources to give you the best
-                  insight you need
-                </h2>
+        <>
+          {/* Background - lowest z-index */}
+          <div className="fixed inset-0 w-full h-full z-0">
+            <FloatingPathsBackground className="w-full h-full" position={-1}>
+              .
+            </FloatingPathsBackground>
+          </div>
+
+          {/* Main content - above background but below navbar */}
+          <div className="relative z-10 pt-24 px-6">
+            <main className="flex flex-col gap-40">
+              <div className="flex flex-col gap-10 items-center justify-center w-[90vw] h-[90dvh]">
+                <p className=" tracking-wider font-extrabold text-5xl md:text-8xl text-blue-500 text-center">
+                  IntEaCt WiTh YOuR dATa
+                </p>
+                <CoolMode>
+                  <Link spy={true} smooth={true} to="register-your-interest">
+                    <Button className="bg-black text-white dark:bg-blue-200 dark:text-dark">
+                      Register your interest
+                    </Button>
+                  </Link>
+                </CoolMode>
               </div>
-              <div className="flex-1">
-                <AnimatedBeamDemo />
+
+              <div>
+                <HighlightText
+                  className="tracking-wider font-extrabold text-5xl lg:text-8xl align-middle text-center md:text-justify"
+                  text="Integrate With Your App"
+                ></HighlightText>
               </div>
-            </div>
-            <PricingBasic />
-          </main>
-        </div>
+
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+                <div className="flex-1">
+                  <FileTreeDemo />
+                </div>
+                <div className="flex-1 w-full">
+                  <AnimatedBeamDemo />
+                </div>
+              </div>
+              <div className="flex flex-col justify-center items-center gap-2">
+                <TextReveal className="tracking-wider font-extrabold text-5xl lg:text-8xl align-middle text-center">
+                  Hear What People Have To Say
+                </TextReveal>
+                <MarqueeDemo />
+              </div>
+              <div
+                className="flex flex-col md:flex-row justify-center items-center gap-2 w-full p-14"
+                id="register-your-interest"
+              >
+                <RegisterInterestReveal />
+                <RegisterYourInterest />
+              </div>
+            </main>
+          </div>
+        </>
       )}
     </>
   );

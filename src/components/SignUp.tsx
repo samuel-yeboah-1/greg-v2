@@ -18,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { signupHandler } from "@/services/auth.service";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export function SignUpForm({
@@ -47,19 +46,6 @@ export function SignUpForm({
       if (response.error) {
         setSignUpError(response.message);
         return;
-      }
-
-      const result = await signIn("credentials", {
-        email: userCredentials.email,
-        password: userCredentials.password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setSignUpError(result.error);
-      } else {
-        router.push("/actions");
-        router.refresh();
       }
     } catch (error: any) {
       setSignUpError(error?.message || "An error occurred during sign up");

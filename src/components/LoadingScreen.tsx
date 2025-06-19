@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Spline from "@splinetool/react-spline";
 
 type LoadingScreenProps = {
   onComplete: () => void;
@@ -29,42 +30,17 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   }, [onComplete]);
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "#111",
-        color: "#fff",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 9999,
-        opacity: fadeOut ? 0 : 1,
-        transition: "opacity 0.5s ease",
-      }}
-    >
-      <h1 style={{ marginBottom: "20px" }}>Loading {progress}%</h1>
-      <div
-        style={{
-          width: "60%",
-          height: "10px",
-          backgroundColor: "#333",
-          borderRadius: "5px",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            width: `${progress}%`,
-            height: "100%",
-            backgroundColor: "#4caf50",
-            transition: "width 0.1s ease",
-          }}
-        />
+    <div className="w-screen h-screen flex items-center justify-center flex-col">
+      <div>
+        <Spline scene="https://prod.spline.design/jeLjM-LIjeTGsI2I/scene.splinecode" />
+      </div>
+      <div className="flex flex-row gap-4">
+        <div>
+          <p className="text-2xl font-semibold">
+            Hi there Buddy, You found Greg
+          </p>
+        </div>
+        <div></div>
       </div>
     </div>
   );
