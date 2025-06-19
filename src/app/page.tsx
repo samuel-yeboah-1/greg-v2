@@ -59,7 +59,7 @@ export default function Home() {
 
                 <Link spy={true} smooth={true} to="register-your-interest">
                   <CoolMode>
-                    <Button className="bg-black text-white dark:bg-blue-200 dark:text-dark">
+                    <Button className="bg-black text-white dark:bg-blue-500 dark:text-white">
                       Register your interest
                     </Button>
                   </CoolMode>

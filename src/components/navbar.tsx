@@ -92,7 +92,7 @@ function Navbar() {
               </Button>
             </div>
 
-            {/* Mobile menu trigger */}
+            {/* Mobile menu trigger - Keep high z-index but make sure menu is higher */}
             <div className="md:hidden z-[60] relative">
               <div className="flex flex-row gap-3 items-center">
                 <ModeToggle />
@@ -103,14 +103,22 @@ function Navbar() {
         </nav>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - INCREASED Z-INDEX TO z-[70] */}
       <div
         ref={menuRef}
-        className="md:hidden fixed inset-0 h-dvh bg-white/50 backdrop-blur-3xl shadow-lg z-50 flex-col items-center justify-center"
+        className="md:hidden fixed inset-0 h-dvh bg-white/50 backdrop-blur-3xl shadow-lg z-[70] flex-col items-center justify-center"
         style={{
           display: "none",
         }}
       >
+        {/* Add hamburger button container at top right to ensure it's clickable */}
+        <div className="absolute top-6 right-4 md:right-[10%] lg:right-[25%] z-[80]">
+          <div className="flex flex-row gap-3 items-center">
+            <ModeToggle />
+            <ToggleButton isOpen={toggleMenu} onClick={handleToggleMenu} />
+          </div>
+        </div>
+
         <ul className="flex flex-col gap-6">
           {navLinks.map((link) => (
             <li key={link.name} className="text-3xl">
