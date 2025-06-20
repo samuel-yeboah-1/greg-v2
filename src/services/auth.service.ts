@@ -5,7 +5,15 @@ import { SigninType, SignupType } from "@/types";
 export const signinHandler = async (userCredentials: SigninType) => {
   try {
     const response = await axiosInstance.post("/auth/login", userCredentials);
-    if (response.status === 200) return response.data;
+
+    if (response.status === 200) {
+      return {
+        success: true,
+        message: "Login successful",
+        data: response.data, // include token/user if needed
+      };
+    }
+
     return {
       success: false,
       message: "Unexpected response from server",
@@ -14,17 +22,20 @@ export const signinHandler = async (userCredentials: SigninType) => {
     const err = error as AxiosError<any>;
     if (err.response) {
       const { status, data } = err.response;
+
       if (status === 404 && data.message) {
         return {
           success: false,
           message: data.message || "No account found",
         };
       }
+
       return {
         success: false,
-        message: data?.message || "An error occured during signin.",
+        message: data?.message || "An error occurred during sign in.",
       };
     }
+
     console.error("Sign-in error:", error);
     return {
       success: false,
@@ -33,15 +44,16 @@ export const signinHandler = async (userCredentials: SigninType) => {
   }
 };
 
+
 export const signupHandler = async (userCredentials: SignupType) => {
   try {
     const response = await axiosInstance.post("/auth/register", userCredentials);
 
-    // Accept 200 or 201 (Created)
     if (response.status === 200 || response.status === 201) {
       return {
         success: true,
-        ...response.data,
+        message: response.data?.message || "Signup successful",
+        data: response.data, // includes token, user, etc. if returned by backend
       };
     }
 
@@ -55,14 +67,13 @@ export const signupHandler = async (userCredentials: SignupType) => {
     if (err.response) {
       const { data, status } = err.response;
 
-      // Capture specific messages if available
       return {
         success: false,
         message: data?.message || `Signup failed with status ${status}.`,
       };
     }
 
-    // Network or unknown error
+    // If the error is not an AxiosError with a response (e.g., network error)
     console.error("Signup error:", error);
     return {
       success: false,
