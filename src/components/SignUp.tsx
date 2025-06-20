@@ -49,31 +49,35 @@ export function SignUpForm({
   const onSubmit = async (userCredentials: SignupType) => {
     try {
       setIsLoading(true);
+      setSignUpError("");
+      setSuccessMessage("");
+
       const response = await signupHandler(userCredentials);
       console.log(response);
+
       if (response.success) {
         setSuccessMessage(response.message);
         setIsSuccess(true);
-        setIsLoading(false);
-      }
-      {
+      } else {
         setSignUpError(response?.message || "Signup failed");
+        setIsSuccess(false);
       }
     } catch (error: any) {
-      console.error("error during sign up:", error);
+      console.error("Error during sign up:", error);
       setSignUpError(error?.message || "An error occurred during sign up");
+      setIsSuccess(false);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && successMessage) {
       toast.success(successMessage);
-    } else {
+    } else if (signUpError) {
       toast.warning(signUpError);
     }
-  }, [successMessage]);
+  }, [isSuccess, successMessage, signUpError]);
 
   return (
     <div

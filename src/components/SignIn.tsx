@@ -1,4 +1,6 @@
 "use client";
+import { useState } from "react";
+import { oauthHandler, signinHandler } from "@/services/auth.service";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,9 +18,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { toast } from "sonner";
+
 import { useRouter } from "next/navigation";
-import { oauthHandler, signinHandler } from "@/services/auth.service";
 export function SignInForm({
   className,
   ...props
@@ -37,20 +39,25 @@ export function SignInForm({
   });
 
   const router = useRouter();
-
   const onSubmit = async (userCredentials: SigninType) => {
     try {
       setIsLoading(true);
+      setLoginError("");
+
       const response = await signinHandler(userCredentials);
+
       if (response.success) {
         setIsSuccess(true);
-      }
-      {
+        toast.success(response.message || "Login successful");
+      } else {
         setLoginError(response?.message || "Login failed");
+        toast.error(response?.message || "Login failed");
       }
     } catch (error: any) {
-      console.error("error during sign in:", error);
-      setLoginError(error?.message || "An error occurred during sign in");
+      const message = error?.message || "An error occurred during sign in";
+      console.error("Error during sign in:", error);
+      setLoginError(message);
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
