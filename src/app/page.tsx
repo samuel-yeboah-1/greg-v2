@@ -5,7 +5,6 @@ import { AnimatedBeamDemo } from "@/components/AnimatedBeam";
 import { PricingBasic } from "@/components/Pricing";
 import { SplineSceneBasic } from "@/components/SplineScene";
 import { useState, useEffect } from "react";
-import Spline from "@splinetool/react-spline";
 import { FloatingPathsBackground } from "@/components/ui/floating-paths";
 import { Link } from "react-scroll";
 import { FileTreeDemo } from "@/components/magicui/FileTree";
@@ -17,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { RegisterYourInterest } from "@/components/forms/register-your-interest";
 import { RegisterInterestReveal } from "@/components/magicui/register";
 import Magnet from "@/components/magicui/magnet";
+import { AboutUsSection } from "@/components/AboutUsSection";
 
 export default function Home() {
   const [showLoader, setShowLoader] = useState(false);
@@ -31,17 +31,16 @@ export default function Home() {
     }
   }, []);
 
-  const handleLoaderComplete = () => {
-    localStorage.setItem("hasVisited", "true"); // mark as visited
-    setShowLoader(false);
-    setLoadingComplete(true);
-  };
+  // const handleLoaderComplete = () => {
+  //   localStorage.setItem("hasVisited", "true"); // mark as visited
+  //   setShowLoader(false);
+  //   setLoadingComplete(true);
+  // };
 
   return (
     <>
-      ]
       <>
-        {/* Background - lowest z-index */}
+     
         <div className="fixed inset-0 w-full h-full z-0">
           <FloatingPathsBackground className="w-full h-full" position={-1}>
             .
@@ -51,10 +50,12 @@ export default function Home() {
         {/* Main content - above background but below navbar */}
         <div className="relative z-10 pt-24 px-6">
           <main className="flex flex-col gap-40">
-            <div className="flex flex-col gap-20 items-center justify-center w-[90vw] h-[90dvh]">
-              <Magnet className="tracking-wider font-extrabold text-5xl md:text-8xl text-blue-500 text-center">
-                IntEaCt WiTh YOuR dATa
-              </Magnet>
+            <div className="flex flex-col gap-20 items-center justify-center w-[93vw] h-[90dvh]">
+              <div className="flex flex-row items-center justify-center">
+                <Magnet className="tracking-wider font-extrabold text-5xl md:text-8xl text-blue-500 text-center">
+                  GREG.
+                </Magnet>
+              </div>
 
               <Link spy={true} smooth={true} to="register-your-interest">
                 <CoolMode>
@@ -80,12 +81,7 @@ export default function Home() {
                 <AnimatedBeamDemo />
               </div>
             </div>
-            <div className="flex flex-col justify-center items-center gap-2">
-              <TextReveal className="tracking-wider font-extrabold text-5xl md:text-9xl align-middle text-center">
-                Hear What People Have To Say
-              </TextReveal>
-              <MarqueeDemo />
-            </div>
+            <AboutUsSection />
             <div
               className="flex flex-col md:flex-row justify-center items-center gap-2 w-full p-14"
               id="register-your-interest"

@@ -49,6 +49,7 @@ export function SignInForm({
       if (response.success) {
         setIsSuccess(true);
         toast.success(response.message || "Login successful");
+        router.push("/actions"); // Redirect to /actions after successful login
       } else {
         setLoginError(response?.message || "Login failed");
         toast.error(response?.message || "Login failed");

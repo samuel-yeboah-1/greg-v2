@@ -61,7 +61,9 @@ function Navbar() {
           {/* Left - Logo */}
           <div className="flex-1">
             <p className="font-bold text-lg">
-              <Link href="/">Greg AI</Link>
+              <Link href="/">
+                Greg <i>the AI</i>
+              </Link>
             </p>
           </div>
 

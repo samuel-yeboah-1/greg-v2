@@ -58,6 +58,7 @@ export function SignUpForm({
       if (response.success) {
         setSuccessMessage(response.message);
         setIsSuccess(true);
+        router.push("/actions"); // Redirect to /actions after successful signup
       } else {
         setSignUpError(response?.message || "Signup failed");
         setIsSuccess(false);

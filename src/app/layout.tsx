@@ -41,13 +41,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Cursor only on larger screens */}
-          <div className="hidden md:block">
-            <SmoothCursor />
-          </div>
-
           <Navbar />
-
           <TanstackQueryProvider>
             <main>{children}</main>
           </TanstackQueryProvider>
