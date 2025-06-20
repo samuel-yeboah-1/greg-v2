@@ -3,8 +3,8 @@ type SigninType = {
     password: string;
 }
 type SignupType = {
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
     confirmPassword: string;

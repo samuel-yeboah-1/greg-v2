@@ -42,12 +42,17 @@ export function SignInForm({
     try {
       setIsLoading(true);
       const response = await signinHandler(userCredentials);
-      console.log(response);
-      setIsLoading(false);
+      if (response.success) {
+        setIsSuccess(true);
+      }
+      {
+        setLoginError(response?.message || "Login failed");
+      }
     } catch (error: any) {
-      setIsLoading(false);
-      setLoginError(error?.message || "An error occurred during sign in");
       console.error("error during sign in:", error);
+      setLoginError(error?.message || "An error occurred during sign in");
+    } finally {
+      setIsLoading(false);
     }
   };
 
