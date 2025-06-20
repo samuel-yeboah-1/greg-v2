@@ -63,3 +63,4 @@ function HighlightText({
 }
 
 export { HighlightText, type HighlightTextProps };
+export default HighlightText;
